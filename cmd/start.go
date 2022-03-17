@@ -10,15 +10,31 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/bartmika/cameraticker/internal/app"
+	"github.com/bartmika/cameraticker/internal/camera"
+)
+
+var (
+	width                            int
+	height                           int
+	format                           string
+	workingDirectoryAbsoluteFilePath string
 )
 
 func init() {
+	startCmd.Flags().IntVarP(&width, "width", "a", 1640, "Width of the image")
+	startCmd.MarkFlagRequired("width")
+	startCmd.Flags().IntVarP(&height, "height", "b", 1232, "Width of the image")
+	startCmd.MarkFlagRequired("height")
+	startCmd.Flags().StringVarP(&format, "type", "c", "png", "Type of image")
+	startCmd.MarkFlagRequired("type")
+	startCmd.Flags().StringVarP(&workingDirectoryAbsoluteFilePath, "workingDir", "d", "/home/pi", "The absolute file path to the directory where all photos are saved")
+	startCmd.MarkFlagRequired("workingDir")
 	rootCmd.AddCommand(startCmd)
 }
 
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Start the camera timer",
+	Short: "Start the camera ticker",
 	Long:  `-`,
 	Run: func(cmd *cobra.Command, args []string) {
 		runcameraticker()
@@ -26,7 +42,8 @@ var startCmd = &cobra.Command{
 }
 
 func runcameraticker() {
-	app, err := app.New()
+	cam := camera.NewLibCameraStill(width, height, format, workingDirectoryAbsoluteFilePath)
+	app, err := app.New(cam)
 	if err != nil {
 		log.Fatal(err)
 	}

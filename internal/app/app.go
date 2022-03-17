@@ -5,17 +5,20 @@ import (
 	"log"
 	"time"
 
+	"github.com/bartmika/cameraticker/internal/camera"
 	"github.com/bartmika/timekit"
 )
 
 type App struct {
+	cam    camera.CameraStillReader
 	timer  *time.Timer
 	ticker *time.Ticker
 	done   chan bool // The channel which terminaton boolean value is delivered.
 }
 
-func New() (*App, error) {
+func New(cam camera.CameraStillReader) (*App, error) {
 	s := &App{
+		cam:    cam,
 		timer:  nil,
 		ticker: nil,
 		done:   make(chan bool, 1), // Create a execution blocking channel.
@@ -97,7 +100,8 @@ func (s *App) RunMainRuntimeLoop() {
 }
 
 func (s *App) executeAtTick(dt time.Time) {
-	fmt.Println(dt) //TODO: Impl.
+	fmt.Println(dt, "Tick")
+	s.cam.Snapshot()
 }
 
 // StopMainRuntimeLoop will tell the application to stop the main runtime loop when the process has been finished.

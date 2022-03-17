@@ -1,6 +1,7 @@
 package camera
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -11,29 +12,35 @@ import (
 type LibCameraStill struct {
 	workingDir string
 	format     string
+	fileExt    string
 	width      int
 	height     int
 }
 
-func NewLibCameraStill(width int, height int, format string, workingDirectoryAbsoluteFilePath string) *LibCameraStill {
-	return &LibCameraStill{
-		workingDir: workingDirectoryAbsoluteFilePath,
-		format:     format,
-		width:      width,
-		height:     height,
-	}
-}
-
-// Snapshot will take a snapshot with the Rasbperry Pi camera module and save it to the specified file. This function is essentially a wrapper function over the `libcamera-still` command.
-func (cam *LibCameraStill) Snapshot() error {
-	// Generate the new filename for our camera still. See available formats via https://www.raspberrypi.com/documentation/accessories/camera.html#encoders
+func NewLibCameraStill(width int, height int, format string, workingDirectoryAbsoluteFilePath string) (*LibCameraStill, error) {
 	fileFormat := map[string]string{
 		"png":    "png",
 		"bmp":    "bmp",
 		"rgb":    "data",
 		"yuv420": "data",
 	}
-	filename := cam.workingDir + "/" + strconv.Itoa(int(time.Now().Unix())) + "." + fileFormat[cam.format]
+	if fileExt, ok := fileFormat[format]; ok {
+		return &LibCameraStill{
+			workingDir: workingDirectoryAbsoluteFilePath,
+			format:     format,
+			fileExt:    fileExt,
+			width:      width,
+			height:     height,
+		}, nil
+	}
+	return nil, errors.New("File format does not exist")
+}
+
+// Snapshot will take a snapshot with the Rasbperry Pi camera module and save it to the specified file. This function is essentially a wrapper function over the `libcamera-still` command.
+func (cam *LibCameraStill) Snapshot() error {
+	// Generate the new filename for our camera still. See available formats via https://www.raspberrypi.com/documentation/accessories/camera.html#encoders
+
+	filename := cam.workingDir + "/" + strconv.Itoa(int(time.Now().Unix())) + "." + cam.fileExt
 
 	// DEVELOPERS NOTE:
 	// We are using the included `libcamera-still` command to handle taking a

@@ -100,8 +100,11 @@ func (s *App) RunMainRuntimeLoop() {
 }
 
 func (s *App) executeAtTick(dt time.Time) {
-	fmt.Println(dt, "Tick")
-	s.cam.Snapshot()
+	fmt.Print(dt, "Tick")
+	err := s.cam.Snapshot()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // StopMainRuntimeLoop will tell the application to stop the main runtime loop when the process has been finished.

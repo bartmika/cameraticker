@@ -36,7 +36,7 @@ func NewLibCameraStill(width int, height int, format string, workingDirectoryAbs
 	return nil, errors.New("File format does not exist")
 }
 
-// Snapshot will take a snapshot with the Rasbperry Pi camera module and save it to the specified file. This function is essentially a wrapper function over the `libcamera-still` command.
+// Snapshot will take a snapshot with the Raspberry Pi camera module and save it to the specified file. This function is essentially a wrapper function over the `libcamera-still` command.
 func (cam *LibCameraStill) Snapshot() error {
 	// Generate the new filename for our camera still. See available formats via https://www.raspberrypi.com/documentation/accessories/camera.html#encoders
 

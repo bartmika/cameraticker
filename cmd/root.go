@@ -19,7 +19,7 @@ func init() {}
 
 var rootCmd = &cobra.Command{
 	Use:   "cameraticker",
-	Short: "",
+	Short: "Snap periodically scheduled photos from the Raspberry Pi camera",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do nothing...

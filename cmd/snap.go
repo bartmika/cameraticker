@@ -22,7 +22,7 @@ func init() {
 
 var snapCmd = &cobra.Command{
 	Use:   "snap",
-	Short: "Snap the camera once",
+	Short: "Snap a single photo with the camera",
 	Long:  `-`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Taking a photo...")

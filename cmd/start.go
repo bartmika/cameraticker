@@ -27,7 +27,7 @@ func init() {
 
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Start the camera ticker",
+	Short: "Start the ticker to snap periodic photos.",
 	Long:  `-`,
 	Run: func(cmd *cobra.Command, args []string) {
 		runcameraticker()

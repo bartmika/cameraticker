@@ -101,7 +101,7 @@ func (s *App) RunMainRuntimeLoop() {
 
 func (s *App) executeAtTick(dt time.Time) {
 	fmt.Print(dt, "Tick")
-	err := s.cam.Snapshot()
+	_, err := s.cam.Snapshot()
 	if err != nil {
 		log.Fatal(err)
 	}

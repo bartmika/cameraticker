@@ -34,7 +34,7 @@ var snapCmd = &cobra.Command{
 		}
 
 		// Take a photo from the camera and save it.
-		err = cam.Snapshot()
+		_, err = cam.Snapshot()
 		if err != nil {
 			log.Fatal(err)
 		}
